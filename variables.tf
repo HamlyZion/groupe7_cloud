@@ -1,6 +1,7 @@
 variable "ami" {
     type = string
     default = "ami-0c809358d149b3ca3"
+    description = "Amazon Linux 2023"
 }
 
 variable "instance_type" {
