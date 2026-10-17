@@ -9,6 +9,11 @@ variable "instance_type" {
     default = "t2.micro"
 }
 
+variable "instance_name" {
+    type = string
+    default = "Group_7_EC2"
+}
+
 variable "security_groups" {
     type = list
     default = ["sg-0c8d1babe3860ff58"]

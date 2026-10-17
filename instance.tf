@@ -6,7 +6,7 @@ resource "aws_instance" "amazon-linux" {
   iam_instance_profile = aws_iam_instance_profile.ec2_iam_profile.name 
 
   tags = {
-    Name = "Group_7_EC2"
+    Name = var.instance_name 
     Patch_Group = "Group_7_PatchLinuxAmz" 
   }
 }
