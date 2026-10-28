@@ -3,7 +3,7 @@ resource "aws_ssm_maintenance_window" "patch_window" {
   name     = "Group_7_mw"
   description = "Patch MW"
   allow_unassociated_targets = false
-  schedule = "cron(00 17 ? * * *)"
+  schedule = "cron(39 19 ? * * *)"
   duration = 1
   cutoff   = 0
 }

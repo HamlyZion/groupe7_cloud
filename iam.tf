@@ -28,16 +28,21 @@ resource "aws_iam_role_policy_attachment" "ssm_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
-resource "aws_iam_role_policy_attachment" "cloudwatch_policy" {
-  role = aws_iam_role.role_secu_ec2.name
-  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+data "aws_iam_policy_document" "put_object_s3" {
+  statement {
+    effect = "Allow"
+    actions = [
+      "s3:PutObject"
+    ]
+    resources = ["${aws_s3_bucket.reporting_bucket.arn}/Patch_history/*"]
+  }
 }
 
-resource "aws_iam_role_policy_attachment" "ec2_instance_policy" {
-  role = aws_iam_role.role_secu_ec2.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2FullAccess"
+resource "aws_iam_role_policy" "put_object_s3" {
+  name   = "put_object_s3"
+  role   = aws_iam_role.role_secu_ec2.id
+  policy = data.aws_iam_policy_document.put_object_s3.json
 }
-
 ################################ ROLE MAINTENANCE WINDOW
 data "aws_iam_policy_document" "assume_role_mw" {
   statement {
@@ -85,4 +90,18 @@ resource "aws_iam_role_policy" "mw_create_image" {
   name   = "mw-create-image"
   role   = aws_iam_role.role_secu_mw.id
   policy = data.aws_iam_policy_document.mw_create_image.json
+}
+
+data "aws_iam_policy_document" "publish_on_topic" {
+  statement {
+    effect    = "Allow"
+    actions   = ["sns:Publish"]
+    resources = [aws_sns_topic.patching_topic.arn]
+  }
+}
+
+resource "aws_iam_role_policy" "publish_on_topic" {
+  name   = "publish_on_topic"
+  role   = aws_iam_role.role_secu_mw.id
+  policy = data.aws_iam_policy_document.publish_on_topic.json
 }

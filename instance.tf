@@ -7,6 +7,6 @@ resource "aws_instance" "amazon-linux" {
 
   tags = {
     Name = var.instance_name 
-    Patch_Group = "Group_7_PatchLinuxAmz" 
+    "Patch Group": "Group_7_PatchLinuxAmz" 
   }
 }

@@ -25,5 +25,5 @@ resource "aws_ssm_patch_baseline" "al_patch" {
 
 resource "aws_ssm_patch_group" "al_patch_group" {
   baseline_id = aws_ssm_patch_baseline.al_patch.id
-  patch_group = "Group_7_PatchGroupLinuxAmz"
+  patch_group = aws_ssm_patch_baseline.al_patch.name
 }
